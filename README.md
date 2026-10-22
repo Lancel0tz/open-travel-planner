@@ -48,7 +48,3 @@ docker compose down
 4. Deploy, open the service URL, and create the first user.
 
 The blueprint provisions a 1 GB persistent disk at `/app/data`. Back up important data separately.
-
-## License
-
-See [LICENSE](LICENSE) and [NOTICE.md](NOTICE.md) for license terms and notices.
