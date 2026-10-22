@@ -1,0 +1,138 @@
+# ── Stage 0: gosu ────────────────────────────────────────────────────────────
+# Rebuild gosu with a current Go toolchain so the runtime image ships no stale
+# Go stdlib (Debian's apt gosu is built with an old Go that trips CVE scanners).
+# The binary and its runtime behaviour are identical to the apt package.
+FROM golang:1.25-alpine AS gosu-build
+RUN CGO_ENABLED=0 GOBIN=/out go install github.com/tianon/gosu@latest
+
+# ── Stage 1: shared ──────────────────────────────────────────────────────────
+FROM node:24-alpine AS shared-builder
+WORKDIR /app
+COPY package.json package-lock.json ./
+COPY shared/package.json ./shared/
+RUN npm ci --workspace=shared
+COPY shared/ ./shared/
+RUN npm run build --workspace=shared
+
+# ── Stage 2: client ──────────────────────────────────────────────────────────
+FROM node:24-alpine AS client-builder
+WORKDIR /app
+COPY package.json package-lock.json ./
+COPY shared/package.json ./shared/
+COPY client/package.json ./client/
+COPY client/scripts/patch-maplibre.mjs ./client/scripts/
+RUN npm ci --workspace=client
+COPY --from=shared-builder /app/shared/dist ./shared/dist
+COPY client/ ./client/
+RUN npm run build --workspace=client
+
+# ── Stage 3: server ──────────────────────────────────────────────────────────
+# --ignore-scripts: nothing here needs a postinstall, tsc only reads types. The one
+# native module, better-sqlite3, ships its binaries inside the npm tarball since 13.x.
+FROM node:24-alpine AS server-builder
+WORKDIR /app
+COPY package.json package-lock.json ./
+COPY shared/package.json ./shared/
+COPY server/package.json ./server/
+RUN npm ci --workspace=server --ignore-scripts
+COPY --from=shared-builder /app/shared/dist ./shared/dist
+COPY server/ ./server/
+RUN npm run build --workspace=server
+
+# ── Stage 4: production runtime ──────────────────────────────────────────────
+FROM node:24-trixie-slim
+WORKDIR /app
+
+# Workspace manifests only — source never enters this stage.
+COPY package.json package-lock.json ./
+COPY shared/package.json ./shared/
+COPY server/package.json ./server/
+
+# The trailing chown runs in this layer on purpose: it covers the manifests and
+# the freshly installed node_modules while they are already part of this layer's
+# changeset, so it costs nothing. Everything copied after this point carries
+# --chown=node:node for the same reason — a recursive chown in a later layer
+# would copy up every inode it touches and duplicate the whole tree in the image.
+#
+# No compiler in this stage. better-sqlite3 13.x carries prebuilt binaries for
+# amd64 and arm64 inside its tarball, so there is nothing left to build: the old
+# python3 + build-essential fallback compiled it against whatever Node headers
+# the base image had that day, and 24.19+ headers give an addon that aborts with
+# "Assertion failed: (env) != nullptr" the first time a statement is collected
+# (#2421). --ignore-scripts because a lockfile-driven npm ci still synthesises
+# `node-gyp rebuild` for the binding.gyp it finds, blind to the package's
+# gypfile:false (npm/cli#9837). The only other install scripts among the runtime
+# deps are esbuild's binary check, redundant next to its optional platform
+# package, and a telemetry ping.
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends tzdata dumb-init wget ca-certificates \
+    libkitinerary-bin libsqlite3-0 && \
+    npm ci --workspace=server --omit=dev --ignore-scripts && \
+    ln -sf "$(find /usr/lib -name kitinerary-extractor -type f | head -1)" /usr/local/bin/kitinerary-extractor; \
+    rm -rf /var/lib/apt/lists/* /usr/local/lib/node_modules/npm /usr/local/bin/npm /usr/local/bin/npx && \
+    chown -R node:node /app
+
+# gosu rebuilt with a current Go toolchain (stage 0) — the entrypoint script uses
+# it to drop to node.
+COPY --from=gosu-build /out/gosu /usr/local/bin/gosu
+
+ENV XDG_CACHE_HOME=/tmp/kf6-cache
+# Prevent Qt from probing for a display in headless containers.
+ENV QT_QPA_PLATFORM=offscreen
+# Fixed path for both amd64 (static binary) and arm64 (symlink to apt binary).
+# Override with KITINERARY_EXTRACTOR_PATH if you install it elsewhere.
+ENV KITINERARY_EXTRACTOR_PATH=/usr/local/bin/kitinerary-extractor
+
+COPY --chown=node:node --from=server-builder /app/server/dist ./server/dist
+# Runtime data assets read from server/assets at runtime: airports.json (flight
+# transport search) and atlas/*.geojson.gz (Atlas country/region map). The build
+# only emits dist, so these must be copied explicitly or the features silently
+# degrade to empty in the image.
+COPY --chown=node:node --from=server-builder /app/server/assets ./server/assets
+# tsconfig-paths/register reads this at runtime to resolve MCP SDK paths.
+COPY --chown=node:node server/tsconfig.json ./server/
+# Encryption-key rotation is run on demand via tsx (a prod dep) straight from the
+# raw .ts source — it never enters dist, so it must be copied in explicitly or
+# `node --import tsx scripts/migrate-encryption.ts` fails with module-not-found.
+COPY --chown=node:node server/scripts/migrate-encryption.ts ./server/scripts/migrate-encryption.ts
+# Admin recovery script (node server/reset-admin.js) for locked-out installs.
+COPY --chown=node:node server/reset-admin.js ./server/reset-admin.js
+COPY --chown=node:node --from=shared-builder /app/shared/dist ./shared/dist
+COPY --chown=node:node --from=client-builder /app/client/dist ./server/public
+COPY --chown=node:node --from=client-builder /app/client/public/fonts ./server/public/fonts
+
+# journey/ and places/ must be listed here and in server/src/index.ts (#1762) —
+# a dir created lazily on first upload needs write permission on the uploads
+# mount point itself, which fails with EACCES when the bind-mounted host dir
+# isn't writable by node. Only paths this layer creates are chowned; anything
+# already in the image arrived node-owned via --chown above.
+RUN mkdir -p /app/data/logs /app/data/uploads/files /app/data/uploads/covers /app/data/uploads/avatars \
+      /app/data/uploads/photos /app/data/uploads/journey /app/data/uploads/places && \
+    ln -s /app/data/uploads /app/uploads && \
+    ln -s /app/uploads /app/server/uploads && \
+    ln -s /app/data /app/server/data && \
+    chown -R node:node /app/data && \
+    chown -h node:node /app/uploads /app/server/uploads /app/server/data
+
+ENV NODE_ENV=production
+ENV NODE_USE_ENV_PROXY=1
+ENV PORT=3000
+ARG APP_VERSION=dev
+ENV APP_VERSION=${APP_VERSION}
+
+EXPOSE 3000
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
+  CMD wget -qO- http://localhost:3000/api/health || exit 1
+
+# Start-up lives in a script, not an inline `sh -c` string: container management
+# UIs re-tokenise Config.Cmd when you edit a container in place, and a command
+# carrying quotes does not survive that round-trip (the container then dies with
+# a shell syntax error before Node starts). A CMD of one bare token does.
+COPY server/scripts/entrypoint.sh /usr/local/bin/trek-entrypoint
+# Root-owned on purpose — this is what calls gosu, so it runs before the drop to
+# node. chmod is explicit because a checkout on Windows carries no exec bit.
+RUN chmod 0755 /usr/local/bin/trek-entrypoint
+
+ENTRYPOINT ["dumb-init", "--"]
+CMD ["/usr/local/bin/trek-entrypoint"]

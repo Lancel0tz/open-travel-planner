@@ -1,0 +1,32 @@
+import type { TranslationStrings } from '../types';
+
+const map: TranslationStrings = {
+  'map.connections': 'Connessioni',
+  'map.showConnections': 'Mostra percorsi prenotati',
+  'map.hideConnections': 'Nascondi percorsi prenotati',
+  'poi.searchThisArea': 'Cerca in questa zona',
+  'poi.cat.restaurants': 'Ristoranti',
+  'poi.cat.cafes': 'Caffè',
+  'poi.cat.bars': 'Bar e vita notturna',
+  'poi.cat.hotels': 'Alloggi',
+  'poi.cat.sights': 'Attrazioni',
+  'poi.cat.museums': 'Musei e cultura',
+  'poi.cat.nature': 'Natura e parchi',
+  'poi.cat.activities': 'Attività',
+  'map.showAllConnections': 'Mostra tutti i percorsi prenotati',
+  'map.hideAllConnections': 'Nascondi tutti i percorsi prenotati',
+  'map.baseLayer.default': 'Mappa',
+  'map.baseLayer.satellite': 'Satellite',
+  'map.baseLayer.switchToSatellite': 'Passa alla vista satellitare',
+  'map.baseLayer.switchToDefault': 'Passa alla vista mappa',
+  'map.location.denied': 'L’accesso alla posizione è bloccato. Controlla le impostazioni del dispositivo; un’app installata ha un proprio permesso di localizzazione, separato dal browser.',
+  'map.location.unavailable': 'Impossibile determinare la tua posizione.',
+  'map.location.timeout': 'La localizzazione ha richiesto troppo tempo. Riprova con una visuale più libera del cielo.',
+  'map.overview.show': 'Mostra tutto il viaggio',
+  'map.overview.hide': 'Nascondi tutto il viaggio',
+  'map.overview.total': 'Distanza totale',
+  'map.attribution': 'Crediti della mappa',
+  'map.overview.unrouted': '{count} tratta/e non calcolabile/i, le distanze sono incomplete.',
+  'map.overview.dayUnrouted': '{count} tratta/e di questo giorno non calcolabile/i',
+};
+export default map;

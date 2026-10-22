@@ -1,0 +1,24 @@
+import type { TranslationStrings } from '../types';
+
+const shared: TranslationStrings = {
+  'shared.expired': 'Link scaduto o non valido',
+  'shared.expiredHint': 'Questo link di viaggio condiviso non è più attivo.',
+  'shared.loadFailed': 'Impossibile caricare questo viaggio',
+  'shared.loadFailedHint': 'Non significa che il link sia scaduto. Controlla la connessione e riprova tra un momento.',
+  'shared.retry': 'Riprova',
+  'shared.readOnly': 'Vista in sola lettura',
+  'shared.tabPlan': 'Programma',
+  'shared.tabBookings': 'Prenotazioni',
+  'shared.tabPacking': 'Valigia',
+  'shared.tabBudget': 'Costi',
+  'shared.tabChat': 'Chat',
+  'shared.days': 'giorni',
+  'shared.places': 'luoghi',
+  'shared.other': 'Altro',
+  'shared.totalBudget': 'Costi totali',
+  'shared.messages': 'messaggi',
+  'shared.sharedVia': 'Condiviso tramite',
+  'shared.confirmed': 'Confermato',
+  'shared.pending': 'In attesa',
+};
+export default shared;

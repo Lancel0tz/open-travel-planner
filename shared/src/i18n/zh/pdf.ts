@@ -1,0 +1,14 @@
+import type { TranslationStrings } from '../types';
+
+const pdf: TranslationStrings = {
+  'pdf.travelPlan': '旅行计划',
+  'pdf.planned': '已规划',
+  'pdf.costLabel': '费用',
+  'pdf.preview': 'PDF 预览',
+  'pdf.saveAsPdf': '保存为 PDF',
+  'pdf.pageBreakPerDay': '每天分页',
+  'pdf.mapTitle': '路线总览',
+  'pdf.distanceLabel': '距离',
+  'pdf.mapCredit': '国家轮廓：geoBoundaries (CC BY 4.0)',
+};
+export default pdf;

@@ -1,0 +1,90 @@
+import type { TranslationStrings } from '../types';
+
+const system_notice: TranslationStrings = {
+  'system_notice.v3_photos.title': '3.0에서 사진이 이동했습니다',
+  'system_notice.v3_photos.body':
+    '여행 플래너의 **사진** 기능이 제거되었습니다. 사진은 안전합니다 — TREK은 Immich 또는 Synology 라이브러리를 수정하지 않았습니다.\n\n사진은 이제 **Journey** 애드온에 있습니다. Journey는 선택 사항입니다 — 아직 사용할 수 없다면 관리자에게 관리자 → 애드온에서 활성화를 요청하세요.',
+  'system_notice.v3_journey.title': 'Journey를 만나보세요 — 여행 일지',
+  'system_notice.v3_journey.body':
+    '타임라인, 사진 갤러리, 인터랙티브 지도가 있는 풍부한 여행 이야기로 여행을 기록하세요.',
+  'system_notice.v3_journey.cta_label': 'Journey 열기',
+  'system_notice.v3_journey.highlight_timeline': '일별 타임라인 및 갤러리',
+  'system_notice.v3_journey.highlight_photos': 'Immich 또는 Synology에서 가져오기',
+  'system_notice.v3_journey.highlight_share': '공개 공유 — 로그인 불필요',
+  'system_notice.v3_journey.highlight_export': 'PDF 사진 책으로 내보내기',
+  'system_notice.v3_features.title': '3.0의 더 많은 하이라이트',
+  'system_notice.v3_features.body': '이번 릴리스에서 알아두면 좋은 몇 가지 더.',
+  'system_notice.v3_features.highlight_dashboard': '모바일 우선 대시보드 재설계',
+  'system_notice.v3_features.highlight_offline': 'PWA로 완전한 오프라인 모드',
+  'system_notice.v3_features.highlight_search': '실시간 장소 검색 자동완성',
+  'system_notice.v3_features.highlight_import': 'KMZ/KML 파일에서 장소 가져오기',
+  'system_notice.v3_mcp.title': 'MCP: OAuth 2.1 업그레이드',
+  'system_notice.v3_mcp.body':
+    'MCP 통합이 완전히 개선되었습니다. OAuth 2.1이 이제 권장 인증 방법입니다. 기존 정적 토큰 (trek_…)은 더 이상 사용되지 않으며 향후 릴리스에서 제거될 예정입니다.',
+  'system_notice.v3_mcp.highlight_oauth': 'OAuth 2.1 권장 (mcp-remote)',
+  'system_notice.v3_mcp.highlight_scopes': '24개 세분화된 권한 범위',
+  'system_notice.v3_mcp.highlight_deprecated': '정적 trek_ 토큰 더 이상 사용 안 됨',
+  'system_notice.v3_mcp.highlight_tools': '확장된 도구 모음 및 프롬프트',
+  'system_notice.v3_thankyou.title': '개인적인 감사 인사',
+  'system_notice.v3_thankyou.body':
+    '떠나시기 전에 잠깐 시간을 내주세요.\n\nTREK은 제 자신의 여행을 위해 만든 사이드 프로젝트로 시작했습니다. 4,000명이 넘는 분들이 모험을 계획하는 데 신뢰해 주실 줄은 상상도 못 했습니다. 모든 별, 모든 이슈, 모든 기능 요청 — 저는 다 읽고, 그것들이 풀타임 직장과 대학 사이의 늦은 밤을 버티게 해줍니다.\n\n알아주셨으면 합니다: TREK은 항상 오픈 소스이고, 항상 자체 호스팅이며, 항상 여러분의 것입니다. 추적 없음, 구독 없음, 조건 없음. 그저 여러분만큼 여행을 사랑하는 누군가가 만든 도구입니다.\n\n[jubnl](https://github.com/jubnl)에게 특별한 감사를. 당신은 훌륭한 협력자가 되었습니다. 3.0을 훌륭하게 만든 많은 부분에 당신의 손길이 담겨 있습니다. 거칠던 초기에 이 프로젝트를 믿어줘서 고맙습니다.\n\n그리고 버그를 제출하고, 문자열을 번역하고, TREK을 친구에게 공유하거나, 단순히 여행 계획에 사용해 주신 모든 분들께 — **감사합니다**. 여러분이 바로 이것이 존재하는 이유입니다.\n\n함께하는 더 많은 모험을 위해.\n\n— Maurice\n\n---\n\n[Discord 커뮤니티에 참여하세요](https://discord.gg/7Q6M6jDwzf)\n\nTREK이 여행을 더 즐겁게 만들어 준다면, [커피 한 잔](https://ko-fi.com/mauriceboe)으로 불을 켜두는 데 도움이 됩니다.',
+  'system_notice.v3014_whitespace_collision.title': '조치 필요: 사용자 계정 충돌',
+  'system_notice.v3014_whitespace_collision.body':
+    '3.0.14 업그레이드 중 저장된 계정의 앞뒤 공백으로 인한 사용자 이름 또는 이메일 충돌이 감지되었습니다. 영향받은 계정은 자동으로 이름이 변경되었습니다. 검토가 필요한 계정을 확인하려면 **[migration] WHITESPACE COLLISION**으로 시작하는 줄의 서버 로그를 확인하세요.',
+  'system_notice.welcome_v1.title': 'TREK에 오신 것을 환영합니다',
+  'system_notice.welcome_v1.body':
+    '올인원 여행 플래너. 일정을 만들고, 친구들과 여행을 공유하고, 온라인 또는 오프라인으로 체계적으로 유지하세요.',
+  'system_notice.welcome_v1.cta_label': '여행 계획',
+  'system_notice.welcome_v1.hero_alt': 'TREK 계획 UI 오버레이가 있는 아름다운 여행지',
+  'system_notice.welcome_v1.highlight_plan': '모든 여행을 위한 일별 일정',
+  'system_notice.welcome_v1.highlight_share': '여행 파트너와 협업',
+  'system_notice.welcome_v1.highlight_offline': '모바일에서 오프라인으로 작동',
+  'system_notice.dev_test_modal.title': '[Dev] 테스트 공지',
+  'system_notice.dev_test_modal.body': '개발 전용 테스트 공지입니다.',
+  'system_notice.thank_you_support.title': 'TREK을 사용해 주셔서 감사합니다',
+  'system_notice.thank_you_support.body':
+    'TREK을 설치해 주셔서 감사하다는 짧은 인사를 전하고 싶습니다 — 정말 큰 힘이 됩니다.\n\n저는 1인 개발자이고, 여가 시간에 TREK을 만들고 있습니다. 처음에는 그저 제 여행을 위한 작은 도구로 시작했는데, 그 이후로 커뮤니티에서 보내주신 응원과 관심에 솔직히 놀라움을 감추지 못하고 있습니다. TREK은 제 온 마음을 담아 만들었지만 — 이 프로젝트를 함께 다듬어 주신 많은 멋진 외부 기여자분들 덕분이기도 합니다.\n\n**TREK은 오픈 소스이며 완전히 무료입니다 — 그리고 앞으로도 영원히 그럴 것입니다. 유료 등급도, 구독도, 숨겨진 조건도 없습니다. 약속드릴게요.**\n\nTREK이 도움이 되셨고 개발을 응원하고 싶으시다면, 작은 커피 한 잔이 제가 계속 만들어 나가는 데 정말 큰 힘이 됩니다 — 전혀 부담 갖지 마세요. 하지만 한 잔 한 잔이 늦은 밤을 버티게 해줍니다.\n\n함께해 주셔서 감사합니다.\n\n— Maurice',
+  'system_notice.thank_you_support.highlight_opensource': 'GitHub에서 100% 오픈 소스',
+  'system_notice.thank_you_support.highlight_free': '영원히 무료 — 유료 등급 절대 없음',
+  'system_notice.thank_you_support.highlight_community': '커뮤니티와 함께 만들어 갑니다',
+  'system_notice.thank_you_support.cta_bmc': 'Buy Me a Coffee',
+  'system_notice.thank_you_support.cta_kofi': 'Ko-fi에서 후원하기',
+  'system_notice.pager.prev': '이전 공지',
+  'system_notice.pager.next': '다음 공지',
+  'system_notice.pager.counter': '{current} / {total}',
+  'system_notice.pager.goto': '{n}번 공지로 이동',
+  'system_notice.pager.position': '공지 {current}/{total}',
+  'system_notice.release_notes.eyebrow': '업데이트 완료',
+  'system_notice.release_notes.headline': 'TREK가 이제 스스로 해내는 네 가지.',
+  'system_notice.release_notes.intro': '자체 장소 API, 처음부터 끝까지 계획되는 로드트립, 내 손에 있는 위치 기록, 그리고 동기화되는 문서.',
+  'system_notice.release_notes.features_label': '이번 릴리스의 주역',
+  'system_notice.release_notes.features_aside': '이게 전부는 아닙니다',
+  'system_notice.release_notes.feature_places_title': 'TREK Places API',
+  'system_notice.release_notes.feature_places_body': '자체 장소 API를 갖춘 최초의 오픈소스 여행 플래너. 7,360만 개 장소, 키 없음, 할당량 없음.',
+  'system_notice.release_notes.feature_roadtrip_title': '로드트립 애드온',
+  'system_notice.release_notes.feature_roadtrip_body': '주행을 스스로 계획합니다: 경로, 거리, 시간, 정차지. 관리자가 켤 때까지 꺼져 있습니다.',
+  'system_notice.release_notes.feature_dawarich_title': 'Dawarich 연동',
+  'system_notice.release_notes.feature_dawarich_body': 'Google Timeline의 자체 호스팅 대안인 Dawarich를 이제 TREK 안에서 읽을 수 있습니다. TREK은 읽기만, 오직 읽기만 합니다.',
+  'system_notice.release_notes.footnote': '그 밖에도 TREK 곳곳에 작은 변경이 많이 담겨 있습니다.',
+  'system_notice.release_notes.notes_label': '릴리스 노트',
+  'system_notice.release_notes.note_eyebrow': '개발자의 한마디',
+  'system_notice.release_notes.note_title': '여러분이 있어서 TREK을 계속 만듭니다.',
+  'system_notice.release_notes.note_body':
+    'TREK은 제 여행을 위한 작은 도구로 시작했습니다. 여행을 더 잘 계획하고 싶어서 퇴근 후에 짬을 내 만들었습니다. 그 뒤로 사실상 한 번도 자라기를 멈춘 적이 없습니다. 여러분이 쓰는 거의 모든 기능은 풀타임 직장을 다니면서 늦은 밤에, 주말에, 기차 안에서 만들었고, 과연 누가 이걸 열어보기나 할까 조용히 생각하던 저녁도 많았습니다.',
+  'system_notice.release_notes.promise_label': '약속',
+  'system_notice.release_notes.promise_lead': 'TREK은 영원히 무료입니다.',
+  'system_notice.release_notes.promise_text':
+    '모든 기능, 모든 업데이트를 모두에게. 유료 등급도, 구독도, 숨겨진 조건도 없습니다.',
+  'system_notice.release_notes.note_body_after':
+    '그런데 여러분이 열어주셨습니다. 몇 달 만에 수천 명이 찾아와 주셨습니다. 별, 버그 보고, 제가 할 줄 모르는 언어로 된 번역, 한 번도 만난 적 없는 분들의 풀 리퀘스트까지. 지금도 매일 아침 가장 먼저 저장소를 확인하는데, 아직도 잘 실감이 나지 않습니다.',
+  'system_notice.release_notes.note_closing': '함께해 주셔서 감사합니다. Maurice 드림',
+  'system_notice.release_notes.support_lead':
+    'TREK은 무료이고 앞으로도 그렇겠지만, 서버와 도메인, 수많은 늦은 밤은 무료가 아닙니다.',
+  'system_notice.release_notes.support_text':
+    'TREK이 여러분의 여행에 자리를 잡았다면, 커피 한 잔으로 다음 릴리스가 계속 나올 수 있게 도와주세요.',
+  'system_notice.release_notes.cta_bmc': 'Buy me a coffee',
+  'system_notice.release_notes.cta_kofi': 'Ko-fi에서 후원하기',
+  'system_notice.release_notes.feature_docsync_title': '문서 동기화',
+  'system_notice.release_notes.feature_docsync_body': 'Paperless-ngx, Papra, Nextcloud, OpenCloud, Synology Drive. 여행의 문서가 이미 운영 중인 저장소와 양방향으로 흐릅니다.',
+};
+export default system_notice;
